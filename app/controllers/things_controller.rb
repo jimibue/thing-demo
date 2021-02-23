@@ -1,23 +1,25 @@
 class ThingsController < ApplicationController
+    # display all things specific thing
+    # * GET /things
     def index
         things = Thing.all
         render component: "Things", props: {things: things}
     end
      
-    # TODO display a specific thing
+    # display a specific thing
     # * GET /things/:id
     def show
         thing = Thing.find(params[:id])
         render component: "Thing", props: {thing:thing}
     end
 
-    # todo return form to create a new things
+   # return form to create a new things
    # * GET /things/new
     def new
         render component: "NewThingForm"
     end
 
-    # todo creates a things to the database
+    # creates a things to the database
     # * POST /things
     def create
         thing = Thing.new(thing_params)
@@ -28,13 +30,15 @@ class ThingsController < ApplicationController
         end
     end
 
-    # todo return form to edit a existing things=
-     # * GET /things/:id/edit
+    # return form to edit a existing things
+    # * GET /things/:id/edit
     def edit
         thing = Thing.find(params[:id])
         render component: "EditThingForm", props: {thing: thing}
     end
 
+    # updates a existing things in the database
+     # * PUT OR PATCH /things/:id
     def update
         thing = Thing.find(params[:id])
         if thing.update(thing_params)
@@ -44,7 +48,7 @@ class ThingsController < ApplicationController
         end
     end
 
-    # todo destroys one thing from the database
+    # destroys one thing from the database
     # * delete /things/:id
     def destroy
         thing = Thing.find(params[:id])
@@ -53,7 +57,9 @@ class ThingsController < ApplicationController
         # reload index page
         redirect_to root_path
       end
-
+    
+    # custom method 
+    # * delete /thingsyo/:asdfhjg
     def taco
       Thing.find(params[:asdfhjg]).destroy
       redirect_to things_new_path
@@ -61,6 +67,7 @@ class ThingsController < ApplicationController
 
     private
 
+    # sanitize params
     def thing_params
       params.require(:thing).permit(:name, :likes)
     end
