@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get '/things/new', to: 'things#new'
   get '/things/:id', to: "things#show"
   get '/things/:id/edit', to: "things#edit"
+  post '/things', to:"things#create"
+  patch '/things/:id', to: "things#update"
 
   delete '/things/:id', to: "things#destroy"
  

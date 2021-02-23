@@ -7,7 +7,8 @@ class ThingsController < ApplicationController
     # TODO display a specific thing
     # * GET /things/:id
     def show
-        render component: "Thing"
+        thing = Thing.find(params[:id])
+        render component: "Thing", props: {thing:thing}
     end
 
     # todo return form to create a new things
@@ -16,12 +17,35 @@ class ThingsController < ApplicationController
         render component: "NewThingForm"
     end
 
+    # todo creates a things to the database
+    # * POST /things
+    def create
+        thing = Thing.new(thing_params)
+        if thing.save
+            redirect_to root_path
+        else
+            render component: "NewThingForm"
+        end
+    end
+
     # todo return form to edit a existing things=
      # * GET /things/:id/edit
     def edit
-        render component: "EditThingForm"
+        thing = Thing.find(params[:id])
+        render component: "EditThingForm", props: {thing: thing}
     end
 
+    def update
+        thing = Thing.find(params[:id])
+        if thing.update(thing_params)
+            redirect_to root_path
+        else
+            render component: "EditThingForm", props: {thing: thing}
+        end
+    end
+
+    # todo destroys one thing from the database
+    # * delete /things/:id
     def destroy
         thing = Thing.find(params[:id])
         thing.destroy
@@ -33,5 +57,11 @@ class ThingsController < ApplicationController
     def taco
       Thing.find(params[:asdfhjg]).destroy
       redirect_to things_new_path
+    end
+
+    private
+
+    def thing_params
+      params.require(:thing).permit(:name, :likes)
     end
 end
